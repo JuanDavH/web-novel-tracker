@@ -1,25 +1,33 @@
 package com.github.juandavh.webnoveltracker.novel;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
+@Entity
+@Table(name="novels")
 public class Novel {
 
-    private final UUID id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    @Column(nullable = false)
     private String title;
+
     private String author;
     private String description;
     private int totalChapters;
-    private final LocalDateTime createdAt;
+
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
 
     public Novel() {
-        this.id = UUID.randomUUID();
-        createdAt = null;
     }
 
     public Novel(UUID id, String title, String author, String description, int totalChapters) {
-        this.id = UUID.randomUUID();
         this.title = title;
         this.author = author;
         this.description = description;
