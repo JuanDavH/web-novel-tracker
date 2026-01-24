@@ -19,7 +19,8 @@ public class NovelFolderService {
     }
 
     public NovelFolder getNovelFolderById(UUID id) {
-        return novelFolderRepository.findById(id).orElse(null);
+        return novelFolderRepository.findById(id)
+                .orElseThrow(() -> new NovelFolderNotFoundException("No folder found with id:" + id));
     }
 
     public NovelFolder createNovelFolder(NovelFolder novelFolder) {
@@ -27,14 +28,16 @@ public class NovelFolderService {
     }
 
     public NovelFolder updateNovelFolder(UUID id, NovelFolder updatedNovelFolder) {
-        NovelFolder existingFolder = novelFolderRepository.findById(id).orElse(null);
+        NovelFolder existingFolder = novelFolderRepository.findById(id)
+                .orElseThrow(() -> new NovelFolderNotFoundException("No folder found with id:" + id));
         existingFolder.setFolderName(updatedNovelFolder.getFolderName());
         existingFolder.setItems(updatedNovelFolder.getItems());
         return novelFolderRepository.save(existingFolder);
     }
 
     public void deleteNovelFolder(UUID id) {
-        NovelFolder novelFolder = novelFolderRepository.findById(id).orElse(null);
+        NovelFolder novelFolder = novelFolderRepository.findById(id)
+                .orElseThrow(() -> new NovelFolderNotFoundException("No folder found with id:" + id));
         novelFolderRepository.delete(novelFolder);
     }
 
