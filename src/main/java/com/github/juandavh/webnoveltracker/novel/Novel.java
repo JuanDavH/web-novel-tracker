@@ -32,7 +32,6 @@ public class Novel {
         this.author = author;
         this.description = description;
         this.totalChapters = totalChapters;
-        this.createdAt = LocalDateTime.now();
     }
 
     public UUID getId() {
@@ -73,6 +72,11 @@ public class Novel {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    @PrePersist
+    void setCreatedAt() {
+        this.createdAt = LocalDateTime.now();
     }
 
     @Override

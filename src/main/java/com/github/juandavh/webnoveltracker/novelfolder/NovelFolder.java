@@ -29,7 +29,6 @@ public class NovelFolder {
     public NovelFolder(String folderName, List<FolderItem> items) {
         this.folderName = folderName;
         this.items = items;
-        this.createdAt = LocalDateTime.now();
     }
 
     public UUID getId() {
@@ -64,5 +63,10 @@ public class NovelFolder {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    @PrePersist
+    void setCreatedAt() {
+        this.createdAt = LocalDateTime.now();
     }
 }

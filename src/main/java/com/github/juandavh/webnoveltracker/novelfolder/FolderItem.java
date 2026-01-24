@@ -40,7 +40,6 @@ public class FolderItem {
         this.folder = folder;
         this.position = position;
         this.pinned = pinned;
-        this.createdAt = LocalDateTime.now();
     }
 
     public UUID getId() {
@@ -81,6 +80,11 @@ public class FolderItem {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    @PrePersist
+    void setCreatedAt() {
+        this.createdAt = LocalDateTime.now();
     }
 
 }
