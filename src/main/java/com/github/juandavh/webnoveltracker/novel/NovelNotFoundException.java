@@ -1,7 +1,11 @@
 package com.github.juandavh.webnoveltracker.novel;
 
-public class NovelNotFoundException extends RuntimeException {
-    public NovelNotFoundException(String message) {
-        super(message);
+import com.github.juandavh.webnoveltracker.exception.NotFoundException;
+
+import java.util.UUID;
+
+public class NovelNotFoundException extends NotFoundException {
+    public NovelNotFoundException(UUID id) {
+        super("No novel found with id " + id);
     }
 }

@@ -17,7 +17,7 @@ public class NovelService {
 
     public Novel getNovelById(UUID id) {
         return novelRepository.findById(id)
-                .orElseThrow(() -> new NovelNotFoundException("No novel found with id: " + id));
+                .orElseThrow(() -> new NovelNotFoundException(id));
     }
 
     public List<Novel> getAllNovels() {
@@ -30,17 +30,20 @@ public class NovelService {
 
     public Novel updateNovel(UUID id, Novel updatedNovel) {
         Novel existingNovel = novelRepository.findById(id)
-                .orElseThrow(() -> new NovelNotFoundException("No novel found with id: " + id));
+                .orElseThrow(() -> new NovelNotFoundException(id));
+
         existingNovel.setTitle(updatedNovel.getTitle());
         existingNovel.setAuthor(updatedNovel.getAuthor());
         existingNovel.setDescription(updatedNovel.getDescription());
         existingNovel.setTotalChapters(updatedNovel.getTotalChapters());
+
         return novelRepository.save(existingNovel);
     }
 
     public void deleteNovel(UUID id) {
         Novel novel = novelRepository.findById(id)
-                        .orElseThrow(() -> new NovelNotFoundException("No novel found with id: " + id));
+                        .orElseThrow(() -> new NovelNotFoundException(id));
+
         novelRepository.delete(novel);
     }
 }
