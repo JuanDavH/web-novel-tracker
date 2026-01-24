@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "folderitems")
+@Table(name = "folderitems", uniqueConstraints = {@UniqueConstraint(columnNames= {"novelID", "folderID"})})
 public class FolderItem {
 
     @Id
@@ -26,7 +26,7 @@ public class FolderItem {
     private NovelFolder folder;
 
     private int position;
-    private boolean pinned;
+    private boolean pinned = false;
 
     @Column(updatable = false)
     private LocalDateTime createdAt;
