@@ -32,7 +32,6 @@ public class NovelFolderService {
                 .orElseThrow(() -> new NovelFolderNotFoundException(id));
 
         existingFolder.setFolderName(updatedNovelFolder.getFolderName());
-        existingFolder.setItems(updatedNovelFolder.getItems());
         return novelFolderRepository.save(existingFolder);
     }
 
