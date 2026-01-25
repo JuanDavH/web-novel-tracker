@@ -41,7 +41,7 @@ public class FolderItemService {
             throw new IllegalArgumentException("Novel already exists in folder");
         }
 
-        int defaultPosition = folderItemRepository.getFolderItemCountByFolderId(folderId);
+        int defaultPosition = folderItemRepository.countByFolderId(folderId);
 
         FolderItem folderItem = new FolderItem(novel, novelFolder, defaultPosition, false);
         return folderItemRepository.save(folderItem);

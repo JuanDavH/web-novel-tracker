@@ -14,5 +14,5 @@ public interface FolderItemRepository extends JpaRepository<FolderItem, UUID> {
 
     Optional<FolderItem> findByFolderIdAndNovelId(UUID folderId, UUID novelId);
 
-    int getFolderItemCountByFolderId(UUID folderId);
+    int countByFolderId(UUID folderId);
 }
