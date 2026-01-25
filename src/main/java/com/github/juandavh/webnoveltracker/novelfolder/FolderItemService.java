@@ -1,0 +1,71 @@
+package com.github.juandavh.webnoveltracker.novelfolder;
+
+import com.github.juandavh.webnoveltracker.novel.Novel;
+import com.github.juandavh.webnoveltracker.novel.NovelNotFoundException;
+import com.github.juandavh.webnoveltracker.novel.NovelRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+@Service
+public class FolderItemService {
+
+    private final FolderItemRepository folderItemRepository;
+    private final NovelFolderRepository novelFolderRepository;
+    private final NovelRepository novelRepository;
+
+    public FolderItemService(FolderItemRepository folderItemRepository, NovelFolderRepository novelFolderRepository,
+                             NovelRepository novelRepository) {
+        this.folderItemRepository = folderItemRepository;
+        this.novelFolderRepository = novelFolderRepository;
+        this.novelRepository = novelRepository;
+    }
+
+    public List<FolderItem> getFolderItems(UUID folderId) {
+        return folderItemRepository.findByFolderId(folderId);
+    }
+
+    public FolderItem createFolderItem(UUID folderId, UUID novelId) {
+        // Ensure given folder and novel exists
+        NovelFolder novelFolder = novelFolderRepository.findById(folderId)
+                .orElseThrow(() -> new NovelFolderNotFoundException(folderId));
+
+        Novel novel = novelRepository.findById(novelId)
+                .orElseThrow(() -> new NovelNotFoundException(novelId));
+
+        // Ensure novel has not already been added to the folder
+        Optional<FolderItem> existingFolderItem = folderItemRepository.findByFolderIdAndNovelId(folderId, novelId);
+        if (existingFolderItem.isPresent()) {
+            throw new IllegalArgumentException("Novel already exists in folder");
+        }
+
+        int defaultPosition = folderItemRepository.getFolderItemCountByFolderId(folderId);
+
+        FolderItem folderItem = new FolderItem(novel, novelFolder, defaultPosition, false);
+        return folderItemRepository.save(folderItem);
+    }
+
+    public FolderItem updateFolderItemPosition(UUID id, int newPosition) {
+        // Increment between new position and current position
+        FolderItem folderItem = folderItemRepository.findById(id)
+                .orElseThrow(() -> new NovelNotFoundException(id)); // temp
+
+        int oldPosition = folderItem.getPosition();
+        //folderItemRepository.updatePosition(id, oldPosition, newPosition);
+
+        return folderItem;
+    }
+
+    public void deleteFolderItem(UUID id) {
+        FolderItem folderItem = folderItemRepository.findById(id)
+                .orElseThrow(() -> new NovelNotFoundException(id)); //temp
+
+        int oldPosition = folderItem.getPosition();
+        // folderItemRepository.decrementPositionsAfterDeletion(oldPosition)
+
+        folderItemRepository.delete(folderItem);
+    }
+
+}
