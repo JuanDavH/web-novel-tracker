@@ -48,10 +48,10 @@ public class FolderItemService {
     }
 
     public FolderItem updateFolderItemPosition(UUID id, int newPosition) {
-        // Increment between new position and current position
         FolderItem folderItem = folderItemRepository.findById(id)
-                .orElseThrow(() -> new NovelNotFoundException(id)); // temp
+                .orElseThrow(() -> new FolderItemNotFoundException(id));
 
+        // Increment between new position and current position
         int oldPosition = folderItem.getPosition();
         //folderItemRepository.updatePosition(id, oldPosition, newPosition);
 
@@ -60,7 +60,7 @@ public class FolderItemService {
 
     public void deleteFolderItem(UUID id) {
         FolderItem folderItem = folderItemRepository.findById(id)
-                .orElseThrow(() -> new NovelNotFoundException(id)); //temp
+                .orElseThrow(() -> new FolderItemNotFoundException(id));
 
         int oldPosition = folderItem.getPosition();
         // folderItemRepository.decrementPositionsAfterDeletion(oldPosition)
