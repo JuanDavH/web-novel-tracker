@@ -47,15 +47,28 @@ public class FolderItemService {
         return folderItemRepository.save(folderItem);
     }
 
-    public FolderItem updateFolderItemPosition(UUID id, int newPosition) {
+    public void updateFolderItemPosition(UUID id, int newPosition) {
         FolderItem folderItem = folderItemRepository.findById(id)
                 .orElseThrow(() -> new FolderItemNotFoundException(id));
+        NovelFolder novelFolder = folderItem.getFolder();
 
-        // Increment between new position and current position
         int oldPosition = folderItem.getPosition();
-        //folderItemRepository.updatePosition(id, oldPosition, newPosition);
+        if (newPosition == oldPosition) return;
 
-        return folderItem;
+        int maxPosition = folderItemRepository.countByFolderId(novelFolder.getId());
+        if (newPosition < 0 || newPosition > maxPosition) {
+            throw new IllegalArgumentException("Position out of bounds");
+        }
+
+        // Adjust bounds to not include updated folder item
+        if (newPosition > oldPosition) {
+            folderItemRepository.decrementPositionsBetweenRange(id, oldPosition + 1, newPosition);
+        }
+        else {
+            folderItemRepository.incrementPositionsBetweenRange(id, oldPosition, newPosition - 1);
+        }
+
+        folderItem.setPosition(newPosition);
     }
 
     public void deleteFolderItem(UUID id) {
