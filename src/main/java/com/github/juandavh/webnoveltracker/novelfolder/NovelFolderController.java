@@ -11,9 +11,11 @@ import java.util.UUID;
 @RequestMapping("/folders")
 public class NovelFolderController {
     private final NovelFolderService novelFolderService;
+    private final FolderItemService folderItemService;
 
-    public NovelFolderController(NovelFolderService novelFolderService) {
+    public NovelFolderController(NovelFolderService novelFolderService, FolderItemService folderItemService) {
         this.novelFolderService = novelFolderService;
+        this.folderItemService = folderItemService;
     }
 
     @GetMapping
@@ -43,4 +45,10 @@ public class NovelFolderController {
         novelFolderService.deleteNovelFolder(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{id}/items")
+    public ResponseEntity<List<FolderItem>> getFolderItems(@PathVariable UUID id) {
+        return ResponseEntity.ok(folderItemService.getFolderItems(id));
+    }
+
 }

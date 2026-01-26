@@ -24,6 +24,10 @@ public class FolderItemService {
     }
 
     public List<FolderItem> getFolderItems(UUID folderId) {
+        // Ensure given folder and novel exists
+        NovelFolder novelFolder = novelFolderRepository.findById(folderId)
+                .orElseThrow(() -> new NovelFolderNotFoundException(folderId));
+
         return folderItemRepository.findByFolderId(folderId);
     }
 
