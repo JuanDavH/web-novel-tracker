@@ -51,4 +51,24 @@ public class NovelFolderController {
         return ResponseEntity.ok(folderItemService.getFolderItems(id));
     }
 
+    @PostMapping("/{id}/items")
+    public ResponseEntity<FolderItem> createFolderItem(@PathVariable UUID id, @RequestBody UUID novelId) {
+        FolderItem createdFolderItem = folderItemService.createFolderItem(id, novelId);
+        URI location = URI.create("/folders/" + id + "/items" + createdFolderItem.getId());
+        return ResponseEntity.created(location).body(createdFolderItem);
+    }
+
+    @PatchMapping("/{folderId}/items/{itemId}")
+    public ResponseEntity<Void> updateFolderItem(@PathVariable UUID folderId, @PathVariable UUID itemId
+    , @RequestBody int newPosition) {
+        folderItemService.updateFolderItemPosition(itemId, newPosition);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{folderId}/items/{itemId}")
+    public ResponseEntity<Void> deleteFolderItem(@PathVariable UUID folderId, @PathVariable UUID itemId) {
+        folderItemService.deleteFolderItem(itemId);
+        return ResponseEntity.noContent().build();
+    }
+
 }
