@@ -61,13 +61,13 @@ public class NovelFolderController {
     @PatchMapping("/{folderId}/items/{itemId}")
     public ResponseEntity<Void> updateFolderItem(@PathVariable UUID folderId, @PathVariable UUID itemId
     , @RequestBody int newPosition) {
-        folderItemService.updateFolderItemPosition(itemId, newPosition);
+        folderItemService.updateFolderItemPosition(folderId, itemId, newPosition);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{folderId}/items/{itemId}")
     public ResponseEntity<Void> deleteFolderItem(@PathVariable UUID folderId, @PathVariable UUID itemId) {
-        folderItemService.deleteFolderItem(itemId);
+        folderItemService.deleteFolderItem(folderId, itemId);
         return ResponseEntity.noContent().build();
     }
 

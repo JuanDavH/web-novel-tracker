@@ -51,15 +51,18 @@ public class FolderItemService {
         return folderItemRepository.save(folderItem);
     }
 
-    public void updateFolderItemPosition(UUID id, int newPosition) {
+    public void updateFolderItemPosition(UUID folderId, UUID id, int newPosition) {
         FolderItem folderItem = folderItemRepository.findById(id)
                 .orElseThrow(() -> new FolderItemNotFoundException(id));
         NovelFolder novelFolder = folderItem.getFolder();
+        if (!folderId.equals(novelFolder.getId())) {
+            throw new IllegalArgumentException("Folder item does not belong to the folder");
+        }
 
         int oldPosition = folderItem.getPosition();
         if (newPosition == oldPosition) return;
 
-        int maxPosition = folderItemRepository.countByFolderId(novelFolder.getId()) - 1;
+        int maxPosition = folderItemRepository.countByFolderId(folderId) - 1;
         if (newPosition < 0 || newPosition > maxPosition) {
             throw new IllegalArgumentException("Position out of bounds");
         }
@@ -75,13 +78,17 @@ public class FolderItemService {
         folderItem.setPosition(newPosition);
     }
 
-    public void deleteFolderItem(UUID id) {
+    public void deleteFolderItem(UUID folderId, UUID id) {
         FolderItem folderItem = folderItemRepository.findById(id)
                 .orElseThrow(() -> new FolderItemNotFoundException(id));
         NovelFolder novelFolder = folderItem.getFolder();
 
+        if (!folderId.equals(novelFolder.getId())) {
+            throw new IllegalArgumentException("Folder item does not belong to the folder");
+        }
+
         int oldPosition = folderItem.getPosition();
-        int maxPosition = folderItemRepository.countByFolderId(novelFolder.getId()) - 1;
+        int maxPosition = folderItemRepository.countByFolderId(folderId) - 1;
         folderItemRepository.decrementPositionsBetweenRange(id, oldPosition + 1, maxPosition);
 
         folderItemRepository.delete(folderItem);
