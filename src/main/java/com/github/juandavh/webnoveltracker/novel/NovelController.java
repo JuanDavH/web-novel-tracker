@@ -21,9 +21,9 @@ public class NovelController {
         return ResponseEntity.ok(novelService.getAllNovels());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Novel> getNovel(@PathVariable UUID id) {
-        return ResponseEntity.ok(novelService.getNovelById(id));
+    @GetMapping("/{novelId}")
+    public ResponseEntity<Novel> getNovel(@PathVariable UUID novelId) {
+        return ResponseEntity.ok(novelService.getNovelById(novelId));
     }
 
     @PostMapping
@@ -33,14 +33,14 @@ public class NovelController {
         return ResponseEntity.created(location).body(novel);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Novel> updateNovel(@PathVariable UUID id, @RequestBody Novel novel) {
-        return ResponseEntity.ok(novelService.updateNovel(id, novel));
+    @PutMapping("/{novelId}")
+    public ResponseEntity<Novel> updateNovel(@PathVariable UUID novelId, @RequestBody Novel novel) {
+        return ResponseEntity.ok(novelService.updateNovel(novelId, novel));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteNovel(@PathVariable UUID id) {
-        novelService.deleteNovel(id);
+    @DeleteMapping("/{novelId}")
+    public ResponseEntity<Void> deleteNovel(@PathVariable UUID novelId) {
+        novelService.deleteNovel(novelId);
         return ResponseEntity.noContent().build();
     }
 }

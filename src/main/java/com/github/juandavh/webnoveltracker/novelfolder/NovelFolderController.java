@@ -23,9 +23,9 @@ public class NovelFolderController {
         return ResponseEntity.ok(novelFolderService.getAllNovelFolders());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<NovelFolder> getNovelFolder(@PathVariable UUID id) {
-        return ResponseEntity.ok(novelFolderService.getNovelFolderById(id));
+    @GetMapping("/{folderId}")
+    public ResponseEntity<NovelFolder> getNovelFolder(@PathVariable UUID folderId) {
+        return ResponseEntity.ok(novelFolderService.getNovelFolderById(folderId));
     }
 
     @PostMapping
@@ -35,26 +35,26 @@ public class NovelFolderController {
         return ResponseEntity.created(location).body(createdNovelFolder);
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<NovelFolder> updateNovelFolder(@PathVariable UUID id, @RequestBody NovelFolder novelFolder) {
-        return ResponseEntity.ok(novelFolderService.updateNovelFolder(id, novelFolder));
+    @PatchMapping("/{folderId}")
+    public ResponseEntity<NovelFolder> updateNovelFolder(@PathVariable UUID folderId, @RequestBody NovelFolder novelFolder) {
+        return ResponseEntity.ok(novelFolderService.updateNovelFolder(folderId, novelFolder));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteNovelFolder(@PathVariable UUID id) {
-        novelFolderService.deleteNovelFolder(id);
+    @DeleteMapping("/{folderId}")
+    public ResponseEntity<Void> deleteNovelFolder(@PathVariable UUID folderId) {
+        novelFolderService.deleteNovelFolder(folderId);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{id}/items")
-    public ResponseEntity<List<FolderItem>> getFolderItems(@PathVariable UUID id) {
-        return ResponseEntity.ok(folderItemService.getFolderItems(id));
+    @GetMapping("/{folderId}/items")
+    public ResponseEntity<List<FolderItem>> getFolderItems(@PathVariable UUID folderId) {
+        return ResponseEntity.ok(folderItemService.getFolderItems(folderId));
     }
 
-    @PostMapping("/{id}/items")
-    public ResponseEntity<FolderItem> createFolderItem(@PathVariable UUID id, @RequestBody UUID novelId) {
-        FolderItem createdFolderItem = folderItemService.createFolderItem(id, novelId);
-        URI location = URI.create("/folders/" + id + "/items" + createdFolderItem.getId());
+    @PostMapping("/{folderId}/items")
+    public ResponseEntity<FolderItem> createFolderItem(@PathVariable UUID folderId, @RequestBody UUID novelId) {
+        FolderItem createdFolderItem = folderItemService.createFolderItem(folderId, novelId);
+        URI location = URI.create("/folders/" + folderId + "/items" + createdFolderItem.getId());
         return ResponseEntity.created(location).body(createdFolderItem);
     }
 
