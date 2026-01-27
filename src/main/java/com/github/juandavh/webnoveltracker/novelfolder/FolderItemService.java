@@ -70,7 +70,7 @@ public class FolderItemService {
 
         int maxPosition = folderItemRepository.countByFolderId(folderId) - 1;
         if (newPosition < 0 || newPosition > maxPosition) {
-            throw new IllegalArgumentException("Position out of bounds");
+            throw new InvalidFolderItemPositionException(newPosition, maxPosition);
         }
 
         // Adjust bounds to not include updated folder item
