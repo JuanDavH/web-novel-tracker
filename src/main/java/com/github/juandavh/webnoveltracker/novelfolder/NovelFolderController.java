@@ -34,14 +34,14 @@ public class NovelFolderController {
 
     @PostMapping
     public ResponseEntity<NovelFolderResponse> createNovelFolder(@RequestBody NovelFolder novelFolder) {
-        NovelFolderResponse createdNovelFolder = novelFolderService.createNovelFolder(novelFolder);
+        NovelFolderResponse createdNovelFolder = novelFolderService.createNovelFolder(novelFolder.getFolderName());
         URI location = URI.create("/folders/" + createdNovelFolder.id());
         return ResponseEntity.created(location).body(createdNovelFolder);
     }
 
     @PatchMapping("/{folderId}")
     public ResponseEntity<NovelFolderResponse> updateNovelFolder(@PathVariable UUID folderId, @RequestBody NovelFolder novelFolder) {
-        return ResponseEntity.ok(novelFolderService.updateNovelFolder(folderId, novelFolder));
+        return ResponseEntity.ok(novelFolderService.updateNovelFolder(folderId, novelFolder.getFolderName()));
     }
 
     @DeleteMapping("/{folderId}")

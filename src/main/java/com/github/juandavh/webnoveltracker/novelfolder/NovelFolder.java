@@ -3,6 +3,7 @@ package com.github.juandavh.webnoveltracker.novelfolder;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,7 +18,7 @@ public class NovelFolder {
     private String folderName;
 
     @OneToMany(mappedBy = "folder", orphanRemoval = true, cascade = CascadeType.ALL)
-    private List<FolderItem> items;
+    private List<FolderItem> items = new ArrayList<>();
 
     @Column(updatable = false)
     private LocalDateTime createdAt;
@@ -26,9 +27,8 @@ public class NovelFolder {
 
     }
 
-    public NovelFolder(String folderName, List<FolderItem> items) {
+    public NovelFolder(String folderName) {
         this.folderName = folderName;
-        this.items = items;
     }
 
     public UUID getId() {

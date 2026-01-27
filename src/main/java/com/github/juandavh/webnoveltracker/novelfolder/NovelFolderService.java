@@ -25,15 +25,16 @@ public class NovelFolderService {
                 .orElseThrow(() -> new NovelFolderNotFoundException(id)));
     }
 
-    public NovelFolderResponse createNovelFolder(NovelFolder novelFolder) {
+    public NovelFolderResponse createNovelFolder(String folderName) {
+        NovelFolder novelFolder = new NovelFolder(folderName);
         return NovelFolderResponse.fromEntity(novelFolderRepository.save(novelFolder));
     }
 
-    public NovelFolderResponse updateNovelFolder(UUID id, NovelFolder updatedNovelFolder) {
+    public NovelFolderResponse updateNovelFolder(UUID id, String newFolderName) {
         NovelFolder existingFolder = novelFolderRepository.findById(id)
                 .orElseThrow(() -> new NovelFolderNotFoundException(id));
 
-        existingFolder.setFolderName(updatedNovelFolder.getFolderName());
+        existingFolder.setFolderName(newFolderName);
         return NovelFolderResponse.fromEntity(novelFolderRepository.save(existingFolder));
     }
 
