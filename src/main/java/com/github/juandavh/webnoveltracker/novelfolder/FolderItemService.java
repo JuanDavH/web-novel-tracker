@@ -3,6 +3,7 @@ package com.github.juandavh.webnoveltracker.novelfolder;
 import com.github.juandavh.webnoveltracker.novel.Novel;
 import com.github.juandavh.webnoveltracker.novel.NovelNotFoundException;
 import com.github.juandavh.webnoveltracker.novel.NovelRepository;
+import com.github.juandavh.webnoveltracker.novelfolder.dto.FolderItemResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,15 +24,16 @@ public class FolderItemService {
         this.novelRepository = novelRepository;
     }
 
-    public List<FolderItem> getFolderItems(UUID folderId) {
-        // Ensure given folder and novel exists
+    public List<FolderItemResponse> getFolderItems(UUID folderId) {
+        // Ensure given folder exists
         NovelFolder novelFolder = novelFolderRepository.findById(folderId)
                 .orElseThrow(() -> new NovelFolderNotFoundException(folderId));
 
-        return folderItemRepository.findByFolderId(folderId);
+        return folderItemRepository.findByFolderId(folderId)
+                .stream().map(FolderItemResponse::fromEntity).toList();
     }
 
-    public FolderItem createFolderItem(UUID folderId, UUID novelId) {
+    public FolderItemResponse createFolderItem(UUID folderId, UUID novelId) {
         // Ensure given folder and novel exists
         NovelFolder novelFolder = novelFolderRepository.findById(folderId)
                 .orElseThrow(() -> new NovelFolderNotFoundException(folderId));
@@ -48,13 +50,14 @@ public class FolderItemService {
         int defaultPosition = folderItemRepository.countByFolderId(folderId);
 
         FolderItem folderItem = new FolderItem(novel, novelFolder, defaultPosition, false);
-        return folderItemRepository.save(folderItem);
+        return FolderItemResponse.fromEntity(folderItemRepository.save(folderItem));
     }
 
     public void updateFolderItemPosition(UUID folderId, UUID id, int newPosition) {
         FolderItem folderItem = folderItemRepository.findById(id)
                 .orElseThrow(() -> new FolderItemNotFoundException(id));
         NovelFolder novelFolder = folderItem.getFolder();
+
         if (!folderId.equals(novelFolder.getId())) {
             throw new IllegalArgumentException("Folder item does not belong to the folder");
         }

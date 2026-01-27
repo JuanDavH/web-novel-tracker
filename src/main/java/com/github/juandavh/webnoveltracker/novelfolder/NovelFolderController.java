@@ -1,5 +1,6 @@
 package com.github.juandavh.webnoveltracker.novelfolder;
 
+import com.github.juandavh.webnoveltracker.novelfolder.dto.FolderItemResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,14 +48,14 @@ public class NovelFolderController {
     }
 
     @GetMapping("/{folderId}/items")
-    public ResponseEntity<List<FolderItem>> getFolderItems(@PathVariable UUID folderId) {
+    public ResponseEntity<List<FolderItemResponse>> getFolderItems(@PathVariable UUID folderId) {
         return ResponseEntity.ok(folderItemService.getFolderItems(folderId));
     }
 
     @PostMapping("/{folderId}/items")
-    public ResponseEntity<FolderItem> createFolderItem(@PathVariable UUID folderId, @RequestBody UUID novelId) {
-        FolderItem createdFolderItem = folderItemService.createFolderItem(folderId, novelId);
-        URI location = URI.create("/folders/" + folderId + "/items" + createdFolderItem.getId());
+    public ResponseEntity<FolderItemResponse> createFolderItem(@PathVariable UUID folderId, @RequestBody UUID novelId) {
+        FolderItemResponse createdFolderItem = folderItemService.createFolderItem(folderId, novelId);
+        URI location = URI.create("/folders/" + folderId + "/items" + createdFolderItem.id());
         return ResponseEntity.created(location).body(createdFolderItem);
     }
 
