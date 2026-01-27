@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,12 +20,12 @@ public interface FolderItemRepository extends JpaRepository<FolderItem, UUID> {
 
     int countByFolderId(UUID folderId);
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("UPDATE FolderItem folderItem SET folderItem.position = folderItem.position + 1 " +
             "WHERE folderItem.folder.id = :folderId AND folderItem.position BETWEEN :start AND :end")
     void incrementPositionsBetweenRange(@Param("folderId") UUID folderId, @Param("start") int start,
                                        @Param("end") int end);
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("UPDATE FolderItem folderItem SET folderItem.position = folderItem.position - 1 " +
             "WHERE folderItem.folder.id = :folderId AND folderItem.position BETWEEN :start AND :end")
     void decrementPositionsBetweenRange(@Param("folderId") UUID folderId, @Param("start") int start,

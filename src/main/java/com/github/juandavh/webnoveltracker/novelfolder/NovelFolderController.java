@@ -1,6 +1,8 @@
 package com.github.juandavh.webnoveltracker.novelfolder;
 
+import com.github.juandavh.webnoveltracker.novelfolder.dto.CreateFolderItemRequest;
 import com.github.juandavh.webnoveltracker.novelfolder.dto.FolderItemResponse;
+import com.github.juandavh.webnoveltracker.novelfolder.dto.UpdateFolderItemPositionRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,16 +55,17 @@ public class NovelFolderController {
     }
 
     @PostMapping("/{folderId}/items")
-    public ResponseEntity<FolderItemResponse> createFolderItem(@PathVariable UUID folderId, @RequestBody UUID novelId) {
-        FolderItemResponse createdFolderItem = folderItemService.createFolderItem(folderId, novelId);
+    public ResponseEntity<FolderItemResponse> createFolderItem(@PathVariable UUID folderId,
+                                                               @RequestBody CreateFolderItemRequest request) {
+        FolderItemResponse createdFolderItem = folderItemService.createFolderItem(folderId, request.novelId());
         URI location = URI.create("/folders/" + folderId + "/items" + createdFolderItem.id());
         return ResponseEntity.created(location).body(createdFolderItem);
     }
 
     @PatchMapping("/{folderId}/items/{itemId}")
     public ResponseEntity<Void> updateFolderItem(@PathVariable UUID folderId, @PathVariable UUID itemId
-    , @RequestBody int newPosition) {
-        folderItemService.updateFolderItemPosition(folderId, itemId, newPosition);
+    , @RequestBody UpdateFolderItemPositionRequest request) {
+        folderItemService.updateFolderItemPosition(folderId, itemId, request.newPosition());
         return ResponseEntity.noContent().build();
     }
 

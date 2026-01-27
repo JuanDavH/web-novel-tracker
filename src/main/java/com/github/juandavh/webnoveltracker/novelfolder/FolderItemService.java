@@ -5,6 +5,7 @@ import com.github.juandavh.webnoveltracker.novel.NovelNotFoundException;
 import com.github.juandavh.webnoveltracker.novel.NovelRepository;
 import com.github.juandavh.webnoveltracker.novelfolder.dto.FolderItemResponse;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +34,7 @@ public class FolderItemService {
                 .stream().map(FolderItemResponse::fromEntity).toList();
     }
 
+    @Transactional
     public FolderItemResponse createFolderItem(UUID folderId, UUID novelId) {
         // Ensure given folder and novel exists
         NovelFolder novelFolder = novelFolderRepository.findById(folderId)
@@ -53,6 +55,7 @@ public class FolderItemService {
         return FolderItemResponse.fromEntity(folderItemRepository.save(folderItem));
     }
 
+    @Transactional
     public void updateFolderItemPosition(UUID folderId, UUID id, int newPosition) {
         FolderItem folderItem = folderItemRepository.findById(id)
                 .orElseThrow(() -> new FolderItemNotFoundException(id));
@@ -72,15 +75,18 @@ public class FolderItemService {
 
         // Adjust bounds to not include updated folder item
         if (newPosition > oldPosition) {
-            folderItemRepository.decrementPositionsBetweenRange(id, oldPosition + 1, newPosition);
+            folderItemRepository.decrementPositionsBetweenRange(folderId, oldPosition + 1, newPosition);
         }
         else {
-            folderItemRepository.incrementPositionsBetweenRange(id, oldPosition, newPosition - 1);
+            folderItemRepository.incrementPositionsBetweenRange(folderId, newPosition, oldPosition - 1);
         }
 
+
         folderItem.setPosition(newPosition);
+        folderItemRepository.save(folderItem);
     }
 
+    @Transactional
     public void deleteFolderItem(UUID folderId, UUID id) {
         FolderItem folderItem = folderItemRepository.findById(id)
                 .orElseThrow(() -> new FolderItemNotFoundException(id));
@@ -92,7 +98,7 @@ public class FolderItemService {
 
         int oldPosition = folderItem.getPosition();
         int maxPosition = folderItemRepository.countByFolderId(folderId) - 1;
-        folderItemRepository.decrementPositionsBetweenRange(id, oldPosition + 1, maxPosition);
+        folderItemRepository.decrementPositionsBetweenRange(folderId, oldPosition + 1, maxPosition);
 
         folderItemRepository.delete(folderItem);
     }
