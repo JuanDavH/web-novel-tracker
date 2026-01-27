@@ -46,7 +46,7 @@ public class FolderItemService {
         // Ensure novel has not already been added to the folder
         Optional<FolderItem> existingFolderItem = folderItemRepository.findByFolderIdAndNovelId(folderId, novelId);
         if (existingFolderItem.isPresent()) {
-            throw new IllegalArgumentException("Novel already exists in folder");
+            throw new NovelAlreadyInFolderException(novelId, folderId);
         }
 
         int defaultPosition = folderItemRepository.countByFolderId(folderId);
