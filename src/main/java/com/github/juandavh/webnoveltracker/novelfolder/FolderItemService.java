@@ -4,6 +4,10 @@ import com.github.juandavh.webnoveltracker.novel.Novel;
 import com.github.juandavh.webnoveltracker.novel.NovelNotFoundException;
 import com.github.juandavh.webnoveltracker.novel.NovelRepository;
 import com.github.juandavh.webnoveltracker.novelfolder.dto.FolderItemResponse;
+import com.github.juandavh.webnoveltracker.novelfolder.exception.FolderItemNotFoundException;
+import com.github.juandavh.webnoveltracker.novelfolder.exception.InvalidFolderItemPositionException;
+import com.github.juandavh.webnoveltracker.novelfolder.exception.NovelAlreadyInFolderException;
+import com.github.juandavh.webnoveltracker.novelfolder.exception.NovelFolderNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

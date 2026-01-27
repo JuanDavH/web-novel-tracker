@@ -1,4 +1,4 @@
-package com.github.juandavh.webnoveltracker.novelfolder;
+package com.github.juandavh.webnoveltracker.novelfolder.exception;
 
 import java.util.UUID;
 

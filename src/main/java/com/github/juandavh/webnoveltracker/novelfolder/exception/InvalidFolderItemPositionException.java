@@ -1,4 +1,4 @@
-package com.github.juandavh.webnoveltracker.novelfolder;
+package com.github.juandavh.webnoveltracker.novelfolder.exception;
 
 public class InvalidFolderItemPositionException extends RuntimeException {
     public InvalidFolderItemPositionException(int newPosition, int maxPosition) {

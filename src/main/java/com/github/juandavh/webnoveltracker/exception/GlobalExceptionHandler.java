@@ -1,7 +1,7 @@
 package com.github.juandavh.webnoveltracker.exception;
 
-import com.github.juandavh.webnoveltracker.novelfolder.InvalidFolderItemPositionException;
-import com.github.juandavh.webnoveltracker.novelfolder.NovelAlreadyInFolderException;
+import com.github.juandavh.webnoveltracker.novelfolder.exception.InvalidFolderItemPositionException;
+import com.github.juandavh.webnoveltracker.novelfolder.exception.NovelAlreadyInFolderException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

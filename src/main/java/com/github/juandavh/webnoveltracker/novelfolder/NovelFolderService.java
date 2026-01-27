@@ -1,6 +1,7 @@
 package com.github.juandavh.webnoveltracker.novelfolder;
 
 import com.github.juandavh.webnoveltracker.novelfolder.dto.NovelFolderResponse;
+import com.github.juandavh.webnoveltracker.novelfolder.exception.NovelFolderNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
