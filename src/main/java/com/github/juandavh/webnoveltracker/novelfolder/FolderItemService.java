@@ -59,10 +59,10 @@ public class FolderItemService {
     public void updateFolderItemPosition(UUID folderId, UUID id, int newPosition) {
         FolderItem folderItem = folderItemRepository.findById(id)
                 .orElseThrow(() -> new FolderItemNotFoundException(id));
-        NovelFolder novelFolder = folderItem.getFolder();
 
+        NovelFolder novelFolder = folderItem.getFolder();
         if (!folderId.equals(novelFolder.getId())) {
-            throw new IllegalArgumentException("Folder item does not belong to the folder");
+            throw new FolderItemNotFoundException(id);
         }
 
         int oldPosition = folderItem.getPosition();
@@ -80,8 +80,7 @@ public class FolderItemService {
         else {
             folderItemRepository.incrementPositionsBetweenRange(folderId, newPosition, oldPosition - 1);
         }
-
-
+        
         folderItem.setPosition(newPosition);
         folderItemRepository.save(folderItem);
     }
@@ -90,10 +89,10 @@ public class FolderItemService {
     public void deleteFolderItem(UUID folderId, UUID id) {
         FolderItem folderItem = folderItemRepository.findById(id)
                 .orElseThrow(() -> new FolderItemNotFoundException(id));
-        NovelFolder novelFolder = folderItem.getFolder();
 
+        NovelFolder novelFolder = folderItem.getFolder();
         if (!folderId.equals(novelFolder.getId())) {
-            throw new IllegalArgumentException("Folder item does not belong to the folder");
+            throw new FolderItemNotFoundException(id);
         }
 
         int oldPosition = folderItem.getPosition();
