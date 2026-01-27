@@ -1,5 +1,6 @@
 package com.github.juandavh.webnoveltracker.novelfolder;
 
+import com.github.juandavh.webnoveltracker.novelfolder.dto.NovelFolderResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,25 +15,26 @@ public class NovelFolderService {
         this.novelFolderRepository = novelFolderRepository;
     }
 
-    public List<NovelFolder> getAllNovelFolders() {
-        return novelFolderRepository.findAll();
+    public List<NovelFolderResponse> getAllNovelFolders() {
+        return novelFolderRepository.findAll()
+                .stream().map(NovelFolderResponse::fromEntity).toList();
     }
 
-    public NovelFolder getNovelFolderById(UUID id) {
-        return novelFolderRepository.findById(id)
-                .orElseThrow(() -> new NovelFolderNotFoundException(id));
+    public NovelFolderResponse getNovelFolderById(UUID id) {
+        return NovelFolderResponse.fromEntity(novelFolderRepository.findById(id)
+                .orElseThrow(() -> new NovelFolderNotFoundException(id)));
     }
 
-    public NovelFolder createNovelFolder(NovelFolder novelFolder) {
-        return novelFolderRepository.save(novelFolder);
+    public NovelFolderResponse createNovelFolder(NovelFolder novelFolder) {
+        return NovelFolderResponse.fromEntity(novelFolderRepository.save(novelFolder));
     }
 
-    public NovelFolder updateNovelFolder(UUID id, NovelFolder updatedNovelFolder) {
+    public NovelFolderResponse updateNovelFolder(UUID id, NovelFolder updatedNovelFolder) {
         NovelFolder existingFolder = novelFolderRepository.findById(id)
                 .orElseThrow(() -> new NovelFolderNotFoundException(id));
 
         existingFolder.setFolderName(updatedNovelFolder.getFolderName());
-        return novelFolderRepository.save(existingFolder);
+        return NovelFolderResponse.fromEntity(novelFolderRepository.save(existingFolder));
     }
 
     public void deleteNovelFolder(UUID id) {

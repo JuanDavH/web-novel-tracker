@@ -2,6 +2,7 @@ package com.github.juandavh.webnoveltracker.novelfolder;
 
 import com.github.juandavh.webnoveltracker.novelfolder.dto.CreateFolderItemRequest;
 import com.github.juandavh.webnoveltracker.novelfolder.dto.FolderItemResponse;
+import com.github.juandavh.webnoveltracker.novelfolder.dto.NovelFolderResponse;
 import com.github.juandavh.webnoveltracker.novelfolder.dto.UpdateFolderItemPositionRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,24 +23,24 @@ public class NovelFolderController {
     }
 
     @GetMapping
-    public ResponseEntity<List<NovelFolder>> getAllNovelFolders() {
+    public ResponseEntity<List<NovelFolderResponse>> getAllNovelFolders() {
         return ResponseEntity.ok(novelFolderService.getAllNovelFolders());
     }
 
     @GetMapping("/{folderId}")
-    public ResponseEntity<NovelFolder> getNovelFolder(@PathVariable UUID folderId) {
+    public ResponseEntity<NovelFolderResponse> getNovelFolder(@PathVariable UUID folderId) {
         return ResponseEntity.ok(novelFolderService.getNovelFolderById(folderId));
     }
 
     @PostMapping
-    public ResponseEntity<NovelFolder> createNovelFolder(@RequestBody NovelFolder novelFolder) {
-        NovelFolder createdNovelFolder = novelFolderService.createNovelFolder(novelFolder);
-        URI location = URI.create("/folders/" + createdNovelFolder.getId());
+    public ResponseEntity<NovelFolderResponse> createNovelFolder(@RequestBody NovelFolder novelFolder) {
+        NovelFolderResponse createdNovelFolder = novelFolderService.createNovelFolder(novelFolder);
+        URI location = URI.create("/folders/" + createdNovelFolder.id());
         return ResponseEntity.created(location).body(createdNovelFolder);
     }
 
     @PatchMapping("/{folderId}")
-    public ResponseEntity<NovelFolder> updateNovelFolder(@PathVariable UUID folderId, @RequestBody NovelFolder novelFolder) {
+    public ResponseEntity<NovelFolderResponse> updateNovelFolder(@PathVariable UUID folderId, @RequestBody NovelFolder novelFolder) {
         return ResponseEntity.ok(novelFolderService.updateNovelFolder(folderId, novelFolder));
     }
 
